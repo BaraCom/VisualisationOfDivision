@@ -62,10 +62,13 @@ class Division {
 
     private int getQuotient(String number, int divisor) {
         int resultQuotient = parseInt(number) / divisor;
+        int resultDeduction = resultQuotient * divisor;
         String resultQuotientLine = Integer.toString(resultQuotient);
 
-        if (resultQuotientLine.charAt(resultQuotientLine.length() - 1) == '0') {
-            resultQuotientLine = resultQuotientLine.substring(0, resultQuotientLine.length() - 1);
+        if (resultDeduction != Integer.parseInt(number)) {
+            if (resultQuotientLine.charAt(resultQuotientLine.length() - 1) == '0') {
+                resultQuotientLine = resultQuotientLine.substring(0, resultQuotientLine.length() - 1);
+            }
         }
         return parseInt(resultQuotientLine);
     }
@@ -97,6 +100,7 @@ class Division {
         int divisor = getValidData();
 
         Visualisation visualisation = new Visualisation(dividend, divisor);
+
         int resultOfExpression = getQuotient(Integer.toString(dividend), divisor);
         String pieceDividendLine = "";
         int lineNumber = 0;
