@@ -29,6 +29,13 @@ class Visualisation {
         return Integer.toString(dividend).length() - deduction.length();
     }
 
+    private String comparesWithTheLengthDivisor(String resultOfExpression) {
+        if (resultOfExpression.length() < Integer.toString(divisor).length()) {
+            resultOfExpression = Integer.toString(divisor);
+        }
+        return resultOfExpression;
+    }
+
     private void showDifference(int lineNumber, String difference) {
         if (lineNumber != 0) {
             if (difference.equals("")) {
@@ -75,6 +82,7 @@ class Visualisation {
 
     void showSecondAnswerLine(int lineNumber, String deduction, String pieceOfDividendLine, String resultOfExpression) {
         int quantityIndent = calcQuantityIndent(Integer.parseInt(pieceOfDividendLine), deduction);
+        resultOfExpression = comparesWithTheLengthDivisor(resultOfExpression);
 
         if (lineNumber == 0) {
             if (quantityIndent != 0) {

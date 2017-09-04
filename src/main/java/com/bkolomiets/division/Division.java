@@ -4,7 +4,7 @@ import java.util.Scanner;
 import static java.lang.Integer.parseInt;
 
 class Division {
-    private boolean checkForNumber(Scanner scanner) {
+    private boolean checkByNumber(Scanner scanner) {
         if (scanner.hasNextInt()) {
             return scanner.hasNextInt();
         } else {
@@ -26,7 +26,7 @@ class Division {
         while (true) {
             Scanner dividendScan = new Scanner(System.in);
 
-            if (checkForNumber(dividendScan)) {
+            if (checkByNumber(dividendScan)) {
                 resultValidation = dividendScan.nextInt();
                 dividendScan.reset();
                 break;
@@ -92,7 +92,7 @@ class Division {
         return differenceLine;
     }
 
-    void division() {
+    void visualisationAndDivision() {
         System.out.print("Enter a dividend: ");
         int dividend = getValidData();
 
