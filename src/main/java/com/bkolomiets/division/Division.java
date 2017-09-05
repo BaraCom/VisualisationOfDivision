@@ -3,7 +3,7 @@ package com.bkolomiets.division;
 import java.util.Scanner;
 import static java.lang.Integer.parseInt;
 
-class Division {
+public class Division {
     private boolean checkByNumber(Scanner scanner) {
         if (scanner.hasNextInt()) {
             return scanner.hasNextInt();
@@ -92,7 +92,7 @@ class Division {
         return differenceLine;
     }
 
-    void visualisationAndDivision() {
+    public String visualisationAndDivision() {
         System.out.print("Enter a dividend: ");
         int dividend = getValidData();
 
@@ -100,6 +100,7 @@ class Division {
         int divisor = getValidData();
 
         Visualisation visualisation = new Visualisation(dividend, divisor);
+        String resultOfTheMethod = "";
 
         int resultOfExpression = getQuotient(Integer.toString(dividend), divisor);
         String pieceDividendLine = "";
@@ -111,16 +112,20 @@ class Division {
             if (selectPieceOfTheDividend(pieceDividendLine, divisor)) {
                 String deduction = getDeduction(pieceDividendLine, divisor);
 
-                visualisation.showFirstAnswerLine(lineNumber);
-                visualisation.showSecondAnswerLine(lineNumber, deduction, pieceDividendLine,
-                        Integer.toString(resultOfExpression));
-                visualisation.showThirdAnswerLine(lineNumber, pieceDividendLine,
-                        Integer.toString(resultOfExpression));
-                visualisation.showTheRest(lineNumber, deduction, pieceDividendLine);
-
+                if (lineNumber == 0) {
+                    resultOfTheMethod += (visualisation.showFirstAnswerLine());
+                    resultOfTheMethod += ("\n") + (visualisation.showSecondAnswerLine(deduction,
+                            pieceDividendLine,
+                            Integer.toString(resultOfExpression)));
+                    resultOfTheMethod += ("\n") + (visualisation.showThirdAnswerLine(pieceDividendLine,
+                            Integer.toString(resultOfExpression)));
+                } else {
+                    resultOfTheMethod += ("\n") + (visualisation.showTheRest(lineNumber, deduction, pieceDividendLine));
+                }
                 pieceDividendLine = getDifference(parseInt(pieceDividendLine), parseInt(deduction));
                 lineNumber++;
             }
         }
+        return resultOfTheMethod;
     }
 }
