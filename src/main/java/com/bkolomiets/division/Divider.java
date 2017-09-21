@@ -14,8 +14,8 @@ public class Divider {
     private String buildColumn(int dividend, int divisor) {
         Visualisation visualisation = new Visualisation(dividend, divisor);
         String resultColumn = "";
-        String pieceDividendLine = "";
-        String prevPieceDivid = "";
+        String pieceOfDividend = "";
+        String prevPieceOfDividend = "";
         String prevDeduction = "";
         int lineNumber = 0;
         int leftPad = 0;
@@ -23,26 +23,26 @@ public class Divider {
         String resultOfExpression = getQuotient(dividend, divisor);
 
         for (char dividendChar : addedToCharArray(dividend)) {
-            pieceDividendLine += Character.toString(dividendChar);
+            pieceOfDividend += Character.toString(dividendChar);
 
-            if (isSelectPieceOfTheDividend(pieceDividendLine, divisor)) {
-                int deduction = getDeduction(pieceDividendLine, divisor);
+            if (isPieceOfTheDividend(pieceOfDividend, divisor)) {
+                int deduction = getDeduction(pieceOfDividend, divisor);
 
                 if (lineNumber == 0) {
-                    resultColumn += visualisation.showFirstAnswerLine()
+                    resultColumn += visualisation.showFirstLine()
                             + "\n"
-                            + visualisation.showSecondAnswerLine(Integer.toString(deduction), pieceDividendLine
+                            + visualisation.showSecondLine(Integer.toString(deduction), pieceOfDividend
                             , resultOfExpression)
                             + "\n"
-                            + visualisation.showThirdAnswerLine(pieceDividendLine, resultOfExpression);
+                            + visualisation.showThirdLine(pieceOfDividend, resultOfExpression);
                 } else {
-                    leftPad += getLeftPad(prevPieceDivid, prevDeduction, lineNumber, pieceDividendLine);
-                    resultColumn += visualisation.showTheRest(pieceDividendLine, Integer.toString(deduction), leftPad);
+                    leftPad += getLeftPad(prevPieceOfDividend, prevDeduction, lineNumber, pieceOfDividend);
+                    resultColumn += visualisation.showRestLines(pieceOfDividend, Integer.toString(deduction), leftPad);
                 }
-                prevPieceDivid = pieceDividendLine;
+                prevPieceOfDividend = pieceOfDividend;
                 prevDeduction = Integer.toString(deduction);
 
-                pieceDividendLine = getDifference(Integer.parseInt(pieceDividendLine), deduction);
+                pieceOfDividend = getDifference(Integer.parseInt(pieceOfDividend), deduction);
                 lineNumber ++;
             }
         }
@@ -50,36 +50,36 @@ public class Divider {
     }
 
     private char[] addedToCharArray(int dividend) {
-        String lineOfNumbers = Integer.toString(dividend);
+        String lineNumber = Integer.toString(dividend);
 
-        return lineOfNumbers.toCharArray();
+        return lineNumber.toCharArray();
     }
 
-    private boolean isSelectPieceOfTheDividend(String pieceOfDividend, int divisor) {
+    private boolean isPieceOfTheDividend(String pieceOfDividend, int divisor) {
         return divisor <= parseInt(pieceOfDividend);
     }
 
-    private String getQuotient(int someNumber, int divisor) {
-        String pieceDividendLine = "";
+    private String getQuotient(int number, int divisor) {
+        String pieceOfDividend = "";
         String methodResult = "";
 
-        for (char dividendChar: addedToCharArray(someNumber)) {
-            pieceDividendLine += Character.toString(dividendChar);
+        for (char dividendChar: addedToCharArray(number)) {
+            pieceOfDividend += Character.toString(dividendChar);
 
-            if (isSelectPieceOfTheDividend(pieceDividendLine, divisor)) {
-                int resultQuotient = Integer.parseInt(pieceDividendLine) / divisor;
+            if (isPieceOfTheDividend(pieceOfDividend, divisor)) {
+                int resultQuotient = Integer.parseInt(pieceOfDividend) / divisor;
                 int deduction = resultQuotient * divisor;
-                methodResult += Integer.parseInt(pieceDividendLine) / divisor;
-                pieceDividendLine = getDifference(Integer.parseInt(pieceDividendLine), deduction);
+                methodResult += Integer.parseInt(pieceOfDividend) / divisor;
+                pieceOfDividend = getDifference(Integer.parseInt(pieceOfDividend), deduction);
             }
         }
         return methodResult;
         }
 
-    private int getDeduction(String pieceDividendLine, int divisor) {
-        String quotient = getQuotient(Integer.parseInt(pieceDividendLine), divisor);
+    private int getDeduction(String pieceOfDividend, int divisor) {
+        String quotient = getQuotient(parseInt(pieceOfDividend), divisor);
 
-        return Integer.parseInt(quotient) * divisor;
+        return parseInt(quotient) * divisor;
     }
 
     private String getDifference(int pieceOfDividend, int deduction) {
@@ -92,31 +92,31 @@ public class Divider {
         }
     }
 
-    private int getLeftPad(String prevPieceDivid, String prevDeduction, int lineNumber, String pieceDividendLine) {
-        if (getDifference(prevPieceDivid.length(), prevDeduction.length()).equals("")) {
-            if (getDifference(Integer.parseInt(prevPieceDivid), Integer.parseInt(prevDeduction)).equals("")) {
+    private int getLeftPad(String prevPieceOfDividend, String prevDeduction, int lineNumber, String pieceOfDividend) {
+        if (getDifference(prevPieceOfDividend.length(), prevDeduction.length()).equals("")) {
+            if (getDifference(parseInt(prevPieceOfDividend), parseInt(prevDeduction)).equals("")) {
                 if (lineNumber == 1) {
-                    return prevPieceDivid.length() + pieceDividendLine.length();
+                    return prevPieceOfDividend.length() + pieceOfDividend.length();
                 } else {
-                    return pieceDividendLine.length();
+                    return pieceOfDividend.length();
                 }
             } else {
-                int difference = Integer.parseInt(prevPieceDivid) - Integer.parseInt(prevDeduction);
+                int difference = parseInt(prevPieceOfDividend) - parseInt(prevDeduction);
 
                 if (lineNumber == 1) {
-                    if (prevPieceDivid.length() == Integer.toString(difference).length()) {
-                        return pieceDividendLine.length();
+                    if (prevPieceOfDividend.length() == Integer.toString(difference).length()) {
+                        return pieceOfDividend.length();
                     } else {
-                        return pieceDividendLine.length() + 1;
+                        return pieceOfDividend.length() + 1;
                     }
                 } else {
-                    return pieceDividendLine.length() - Integer.toString(difference).length();
+                    return pieceOfDividend.length() - Integer.toString(difference).length();
                 }
             }
         } else {
-            int difference = Integer.parseInt(prevPieceDivid) - Integer.parseInt(prevDeduction);
+            int difference = parseInt(prevPieceOfDividend) - parseInt(prevDeduction);
 
-            return pieceDividendLine.length() + Integer.toString(difference).length();
+            return pieceOfDividend.length() + Integer.toString(difference).length();
         }
     }
 }

@@ -2,6 +2,7 @@ package com.bkolomiets.division;
 
 import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.leftPad;
+import static java.lang.Integer.parseInt;
 
 class Visualisation {
     private static final String KNOT_SPLITTER = "+";
@@ -16,92 +17,78 @@ class Visualisation {
         this.divisor = divisor;
     }
 
-    private String createQuantityHorizontalSplitter(String pieceOfDividendLine, String horizontalSplitter) {
-        int pieceOfDividendLength = pieceOfDividendLine.length();
+    private String createHorizontalSplitter(String pieceOfDividend) {
+        int pieceOfDividendLength = pieceOfDividend.length();
         StringBuilder concatHorizontalSplitter = new StringBuilder();
 
         for (int i = 0; i < pieceOfDividendLength; i++) {
-            concatHorizontalSplitter.append(horizontalSplitter);
+            concatHorizontalSplitter.append(HORIZONTAL_SPLITTER);
         }
         return concatHorizontalSplitter.toString();
     }
 
-    private int calcQuantityIndent(int dividend, String deduction) {
+    private int getLeftIndent(int dividend, String deduction) {
         return Integer.toString(dividend).length() - deduction.length();
     }
 
-    private String comparesWithTheLengthDivisor(String resultOfExpression) {
+    private String getDifferenceLength(String resultOfExpression) {
         if (resultOfExpression.length() < Integer.toString(divisor).length()) {
             resultOfExpression = Integer.toString(divisor);
         }
         return resultOfExpression;
     }
 
-    public String showFirstAnswerLine() {
+    public String showFirstLine() {
         return dividend + " " + VERTICAL_SPLITTER + " " + divisor;
     }
 
-    public String showSecondAnswerLine(String deduction, String pieceOfDividendLine, String resultOfExpression) {
-        int quantityIndent = calcQuantityIndent(Integer.parseInt(pieceOfDividendLine), deduction);
-        resultOfExpression = comparesWithTheLengthDivisor(resultOfExpression);
-        String resultOfTheMethod = "";
+    public String showSecondLine(String deduction, String pieceOfDividend, String resultOfExpression) {
+        int leftIndent = getLeftIndent(parseInt(pieceOfDividend), deduction);
+        resultOfExpression = getDifferenceLength(resultOfExpression);
+        String resultMethod = "";
 
-        if (quantityIndent != 0) {
-            resultOfTheMethod += leftPad(deduction, deduction.length() + quantityIndent, " ")/*;*/
+        if (leftIndent != 0) {
+            resultMethod += leftPad(deduction, deduction.length() + leftIndent, " ")
                 + leftPad(KNOT_SPLITTER
-                    ,Integer.toString(dividend).length() - (quantityIndent + deduction.length()) + 2
+                    ,Integer.toString(dividend).length() - (leftIndent + deduction.length()) + 2
                     , " ")
                 + " "
-                + leftPad(createQuantityHorizontalSplitter(resultOfExpression, HORIZONTAL_SPLITTER)
+                + leftPad(createHorizontalSplitter(resultOfExpression)
                     , 1
                     , " ");
-
-            /*if ((deduction.length() + 1) == resultOfExpression.length()) {
-                resultOfTheMethod += leftPad(KNOT_SPLITTER,
-                        quantityIndent + 1,
-                        " ")
-                        + " "
-                        + createQuantityHorizontalSplitter(resultOfExpression, HORIZONTAL_SPLITTER);
-            } else {
-                resultOfTheMethod += leftPad(KNOT_SPLITTER,
-                        quantityIndent + 1,
-                        " ")
-                        + " "
-                        + createQuantityHorizontalSplitter(resultOfExpression, HORIZONTAL_SPLITTER);
-            }*/
         } else {
-            quantityIndent = calcQuantityIndent(dividend, deduction);
-            resultOfTheMethod += deduction
-                    + leftPad(KNOT_SPLITTER, quantityIndent + 2, " ")
-                    + " "
-                    + createQuantityHorizontalSplitter(resultOfExpression, HORIZONTAL_SPLITTER);
+            leftIndent = getLeftIndent(dividend, deduction);
+            resultMethod += deduction
+                + leftPad(KNOT_SPLITTER, leftIndent + 2, " ")
+                + " "
+                + createHorizontalSplitter(resultOfExpression);
         }
-        return resultOfTheMethod;
+        return resultMethod;
     }
 
-    public String showThirdAnswerLine(String pieceOfDividendLine, String resultOfExpression) {
-        int quantityIndent = calcQuantityIndent(dividend, pieceOfDividendLine);
+    public String showThirdLine(String pieceOfDividend, String resultOfExpression) {
+        int leftIndent = getLeftIndent(dividend, pieceOfDividend);
 
-        return createQuantityHorizontalSplitter(pieceOfDividendLine, HORIZONTAL_SPLITTER)
-                + leftPad(VERTICAL_SPLITTER, quantityIndent + 2, " ")
+        return createHorizontalSplitter(pieceOfDividend)
+                + leftPad(VERTICAL_SPLITTER, leftIndent + 2, " ")
                 + " "
                 + resultOfExpression;
     }
 
-    public String showTheRest(String pieceDividendLine, String deduction, int leftPad) {
-        String horizontalSplitter = createQuantityHorizontalSplitter(pieceDividendLine, HORIZONTAL_SPLITTER);
+    public String showRestLines(String pieceDividend, String deduction, int leftPad) {
+        String horizontalSplitter = createHorizontalSplitter(pieceDividend);
 
         return "\n"
-                + StringUtils.leftPad(pieceDividendLine
-                , leftPad
-                , " ")
+                + StringUtils.leftPad(pieceDividend
+                    , leftPad
+                    , " ")
                 + "\n"
                 + StringUtils.leftPad(deduction
-                , leftPad
-                , " ")
+                    , leftPad
+                    , " ")
                 + "\n"
                 + StringUtils.leftPad(horizontalSplitter
-                , leftPad
-                , " ");
+                    , leftPad
+                    , " ");
     }
 }
